@@ -2,10 +2,9 @@ import pandas as pd
 
 #pnad_caminho = '/content/drive/MyDrive/Cursos/IFCE-EstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
 #pnad_caminho = '/home/santiago/Documentos/CursoEstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
-pnad_caminho = '/home/santiago/Documentos/CursoEstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
+#pnad_caminho = '/home/santiago/Programming/CursoEstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
+pnad_caminho = 'Pesquisa Nacional por Amostra de Domicílios.csv'
 pnad = pd.read_csv(pnad_caminho)
-
-print(pnad)
 
 print('==> Variáveis PNAD:')
 for coluna in pnad.columns.values:
@@ -64,9 +63,12 @@ print('    Idade: ' + str(round(id.std(), 2)) + ' anos')
 print('    Renda: R$ ' + str(round(rd.std(), 2)))
 print('    Altura: ' + str(round(at.std(), 4)) + ' metros')
 
-from tabulate import tabulate
 print(' ')
 print('==> Renda média')
-renda_uf = rd.groupby([cr, uf]).mean().to_frame()
-renda_uf
-#renda_uf.pivot(index=uf, columns=cr, values='Renda')
+#print(pnad['Renda'].groupby(['Cor', 'UF']).mean())
+print(pnad['Renda'].groupby([pnad['Cor'], pnad['UF'].replace(uf_siglas)]).mean().pivot(index=pnad['UF'], columns=pnad['Cor'], values=pnad['Renda']))
+print(pnad['Renda'].groupby([pnad['Cor'], pnad[UF]]))
+#print(rd.groupby([uf, cr]))#.mean().to_frame().pivot(index=uf, columns=cr, values=rd))
+#renda_uf = rd.groupby([cr, uf]).mean().to_frame()
+#print(renda_uf)
+#renda_uf.pivot(index=uf, columns=cr, values=rd)
