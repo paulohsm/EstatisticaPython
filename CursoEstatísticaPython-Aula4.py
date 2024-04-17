@@ -6,6 +6,10 @@ import pandas as pd
 pnad_caminho = 'Pesquisa Nacional por Amostra de Domicílios.csv'
 pnad = pd.read_csv(pnad_caminho)
 
+def abre_var(variavel):
+        print(' ')
+        print('==> ' + variavel + ':')
+
 print('==> Variáveis PNAD:')
 for coluna in pnad.columns.values:
                print('    ' + coluna)
@@ -66,5 +70,15 @@ print('    Altura: ' + str(round(at.std(), 4)) + ' metros')
 print(' ')
 print('==> Renda média')
 renda_media = pnad['Renda'].groupby([uf, cr]).mean().round(2)
-renda_cor = renda_media.unstack().reset_index()
+renda_cor = renda_media.unstack()
 print(renda_cor)
+
+abre_var('Renda média (por sexo)')
+renda_media = pnad['Renda'].groupby([uf,sx]).mean().round(2)
+renda_sexo = renda_media.unstack()
+print(renda_sexo)
+
+abre_var('Altura média por cor e por sexo')
+altura_media = pnad['Altura'].groupby([cr, sx]).mean().round(4)
+alturas = altura_media.unstack()
+print(alturas)
