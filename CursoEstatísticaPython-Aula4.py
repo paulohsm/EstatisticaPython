@@ -1,3 +1,4 @@
+# Aula realizada dia 12/04/2024
 import pandas as pd
 
 #pnad_caminho = '/content/drive/MyDrive/Cursos/IFCE-EstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
@@ -82,3 +83,8 @@ abre_var('Altura média por cor e por sexo')
 altura_media = pnad['Altura'].groupby([cr, sx]).mean().round(4)
 alturas = altura_media.unstack()
 print(alturas)
+
+# Gráficos
+import matplotlib.pyplot as plt
+plt.plot(alturas)
+plt.show(block=True)
