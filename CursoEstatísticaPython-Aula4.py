@@ -1,6 +1,8 @@
 # Aula realizada dia 12/04/2024
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 #pnad_caminho = '/content/drive/MyDrive/Cursos/IFCE-EstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
 #pnad_caminho = '/home/santiago/Documentos/CursoEstatisticaPython/Pesquisa Nacional por Amostra de Domicílios.csv'
@@ -27,6 +29,7 @@ pnad['Sexo'] = pnad['Sexo'].replace(sexo_cod)
 pnad['Cor'] = pnad['Cor'].replace(cor_codigo)
 pnad['Anos de Estudo'] = pnad['Anos de Estudo'].replace(anos_estudo)
 
+#%% começando os trabalhos
 print(' ')
 print('==> Médias:')
 print('    Idade: ' + str(round(pnad['Idade'].mean(), 2)) + ' anos')
@@ -74,31 +77,21 @@ renda_sexo = renda_media.unstack()
 print(renda_sexo)
 
 #%% Gráficos
-abre_var('Altura média por cor e por sexo')
-pnad_agrupado = pnad.groupby(['Sexo_str', 'Cor_str'])['Altura'].mean().unstack()
-plt.figure(figsize=(10, 4))
-pnad_agrupado.plot(kind='bar', stacked=True, colormap='tab20', title='Comparação da altura por sexo e cor')
+abre_var('Gráfico da renda média por cor e por sexo')
+pnad_agrupado = pnad.groupby(['Cor', 'Sexo'])['Renda'].mean().unstack()
+# Criando bar plots
+bar_width = 0.4
+x = np.arange(len(pnad_agrupado.axes[0]))
+print(x)
+plt.bar(x-0.2, pnad_agrupado['Feminino'], bar_width)
+plt.bar(x+0.2, pnad_agrupado['Masculino'], bar_width)
+plt.xticks(x, pnad_agrupado.axes[0].values)
+plt.legend(['Mulheres', 'Homens'])
+plt.title('Renda Média PNAD')
 plt.xlabel('Cor')
-plt.ylabel('Altura média (m)')
-plt.xticks(rotation=0)
-plt.legend(title='Sexo')
-plt.tight_layout()
+plt.ylabel('Renda (R$)')
 plt.show()
 
-#altura_media = pnad['Altura'].groupby([cr, sx]).mean().round(4)
-#alturas = altura_media.unstack()
-#print(alturas)
-#print(type(alturas))
-#print(alturas.melt(id_vars='Sexo'))
-
-
-
-
-
-#import seaborn as sns
-#fig, ax1 = plt.subplots(figsize=(10,5))
-#tidy = alturas.melt(id_vars='Sexo')
-#sns.barplot(data=alturas, ax=ax1, x='Cor', y='Value', hue='Variable')
-#plt.bar(alturas, alturas.values)
-#plt.show()
-#plt.show(block=True)
+abre_var('Gráfico do espalhamento Altura vs Idade')
+plt.scatter(pnad['Idade'], pnad['Altura'])
+plt.show()
