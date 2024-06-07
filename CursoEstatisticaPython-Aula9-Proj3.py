@@ -17,7 +17,6 @@ Dias = poluicao_tabela['Data'].str.split(",", expand=True)[1]
 DiaSemana = ["ter", "qua", "qui", "sex", "sab", "dom", "seg"] * 18
 MesesDic = {'Jan':1, 'Fev':2, 'Mar':3, 'Abr':4, 'Mai':5, 'Jun':6, 'Jul':7, 'Ago':8, 'Set':9, 'Out':10, 'Nov':11, 'Dez':12}
 MesesInt = (pd.Series(Meses)).map(MesesDic)
-print(MesesInt)
 
 Datas = []
 for i in range(len(Meses)):
@@ -48,22 +47,19 @@ eixos[3].annotate('d', xy=(0.005, 0.045), xycoords="axes fraction", bbox=dict(fa
 eixos[3].set_xticks(Datas[::10])
 eixos[3].set_xlabel('Ano: 1991')
 plt.tight_layout()
-plt.savefig('seriest-painel.png')
-#plt.clf(seriest)
-#plt.cla(seriest)
+plt.savefig('seriest-painel.eps')
 plt.clf()
 plt.close('all')
-#plt.show()
 
-# Médias
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].mean().round(4))
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).mean().round(4))
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).mean().round(4))
+print('Médias')
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].mean().round(3))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).mean().round(3))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).mean().round(3))
 
-# Desvios padrão
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].std().round(4))
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).std().round(4))
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).std().round(4))
+print('Desvios padrão')
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].std().round(3))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).std().round(3))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).std().round(3))
 
 # Graficos de medias - geral, mensal, ciclo semanal
 titulos_mensal = ["Geral", "Janeiro", "Fevereiro", "Março", "Abril"]
@@ -92,41 +88,45 @@ ur_media_semanal = poluicao_tabela['umid'].groupby(poluicao_tabela['DiaSemana'],
 #plt.bar(titulos_semanal, np.append(co_media_semanal, co_media_semanal)[5:12])
 #plt.show()
 
-co_medias = plt.figure(figsize=(15,4))
+co_medias = plt.figure(figsize=(15,5))
 co_gs = co_medias.add_gridspec(1,2, wspace=0)
 co_eixos = co_gs.subplots(sharey=True)
 co_eixos[0].bar(titulos_mensal, co_media_mensal)
 co_eixos[1].bar(titulos_semanal, np.append(co_media_semanal, co_media_semanal)[5:12])
 plt.suptitle('Concentração média de CO (ppm)')
 plt.tight_layout()
-plt.savefig('medias-co.png')
+plt.savefig('medias-co.eps')
 
-o3_medias = plt.figure(figsize=(15,4))
+o3_medias = plt.figure(figsize=(15,5))
 o3_gs = o3_medias.add_gridspec(1,2, wspace=0)
 o3_eixos = o3_gs.subplots(sharey=True)
 o3_eixos[0].bar(titulos_mensal, o3_media_mensal)
 o3_eixos[1].bar(titulos_semanal, np.append(o3_media_semanal, o3_media_semanal)[5:12])
 plt.suptitle('Concentração média de O₃ (ppm)')
 plt.tight_layout()
-plt.savefig('medias-o3.png')
+plt.savefig('medias-o3.eps')
 
-tp_medias = plt.figure(figsize=(15,4))
+tp_medias = plt.figure(figsize=(15,5))
 tp_gs = tp_medias.add_gridspec(1,2, wspace=0)
 tp_eixos = tp_gs.subplots(sharey=True)
 tp_eixos[0].bar(titulos_mensal, tp_media_mensal)
 tp_eixos[1].bar(titulos_semanal, np.append(tp_media_semanal, tp_media_semanal)[5:12])
 plt.suptitle('Temperatura média (°C)')
 plt.tight_layout()
-plt.savefig('medias-tp.png')
+plt.savefig('medias-tp.eps')
 
-ur_medias = plt.figure(figsize=(15,4))
+ur_medias = plt.figure(figsize=(15,5))
 ur_gs = ur_medias.add_gridspec(1,2, wspace=0)
 ur_eixos = ur_gs.subplots(sharey=True)
 ur_eixos[0].bar(titulos_mensal, ur_media_mensal)
 ur_eixos[1].bar(titulos_semanal, np.append(ur_media_semanal, ur_media_semanal)[5:12])
 plt.suptitle('Umidade Relativa média (%)')
 plt.tight_layout()
-plt.savefig('medias-ur.png')
+plt.savefig('medias-ur.eps')
+
+plt.clf()
+plt.close('all')
+
 
 '''
 fig, (axs1, axs2) = plt.subplots(1,2)
@@ -141,7 +141,67 @@ plt.savefig('medias-co.png')
 #plt.show()
 '''
 
-#plt.scatter(poluicao_tabela['CO'], poluicao_tabela['O3'])
-#plt.show()
 
 # Graficos de nuvem / dispersao-xy entre as variaveis
+m, b = np.polyfit(poluicao_tabela['CO'], poluicao_tabela['O3'], 1)
+plt.scatter(poluicao_tabela['CO'], poluicao_tabela['O3'])
+plt.plot(poluicao_tabela['CO'], m*poluicao_tabela['CO']+b, color='red')
+plt.title('Espalhamento O3(CO)')
+plt.xlabel('CO (ppm)')
+plt.ylabel('O3 (ppm)')
+plt.text(9.5, 230, 'inclinação = ' + str(round(m,4)), fontsize=10, )
+plt.tight_layout()
+x0,x1 = plt.gca().get_xlim()
+y0,y1 = plt.gca().get_ylim()
+plt.gca().set_aspect((x1-x0)/(y1-y0))
+plt.savefig('xy-co-o3.eps')
+plt.clf()
+plt.close('all')
+
+m, b = np.polyfit(poluicao_tabela['O3'], poluicao_tabela['temp'], 1)
+plt.scatter(poluicao_tabela['O3'], poluicao_tabela['temp'])
+plt.plot(poluicao_tabela['O3'], m*poluicao_tabela['O3']+b, color='red')
+plt.title('Espalhamento Temperatura(O3)')
+plt.xlabel('O3 (ppm)')
+plt.ylabel('Temperatura (°C)')
+plt.text(0, 21, 'inclinação = ' + str(round(m,4)), fontsize=10, )
+plt.tight_layout()
+x0,x1 = plt.gca().get_xlim()
+y0,y1 = plt.gca().get_ylim()
+plt.gca().set_aspect((x1-x0)/(y1-y0))
+plt.savefig('xy-o3-tp.eps')
+plt.clf()
+plt.close('all')
+
+m, b = np.polyfit(poluicao_tabela['temp'], poluicao_tabela['umid'], 1)
+plt.scatter(poluicao_tabela['temp'], poluicao_tabela['umid'])
+plt.plot(poluicao_tabela['temp'], m*poluicao_tabela['temp']+b, color='red')
+plt.title('Espalhamento Umidade Relativa(Temperatura)')
+plt.xlabel('Temperatura (°C)')
+plt.ylabel('Umidade Relativa (%)')
+plt.text(12, 99, 'inclinação = ' + str(round(m,4)), fontsize=10, )
+plt.tight_layout()
+x0,x1 = plt.gca().get_xlim()
+y0,y1 = plt.gca().get_ylim()
+plt.gca().set_aspect((x1-x0)/(y1-y0))
+plt.savefig('xy-tp-ur.eps')
+plt.clf()
+plt.close('all')
+
+m, b = np.polyfit(poluicao_tabela['umid'], poluicao_tabela['CO'], 1)
+plt.scatter(poluicao_tabela['umid'], poluicao_tabela['CO'])
+plt.plot(poluicao_tabela['umid'], m*poluicao_tabela['umid']+b, color='red')
+plt.title('Espalhamento CO(Umidade Relativa)')
+plt.xlabel('Umidade Relativa (%)')
+plt.ylabel('CO (ppm)')
+plt.text(48.5, 12.5, 'inclinação = ' + str(round(m,4)), fontsize=10, )
+plt.tight_layout()
+x0,x1 = plt.gca().get_xlim()
+y0,y1 = plt.gca().get_ylim()
+plt.gca().set_aspect((x1-x0)/(y1-y0))
+plt.savefig('xy-ur-co.eps')
+plt.clf()
+plt.close('all')
+
+
+
