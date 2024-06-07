@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from  datetime import date
 import matplotlib.pyplot as plt
 
@@ -48,12 +49,99 @@ eixos[3].set_xticks(Datas[::10])
 eixos[3].set_xlabel('Ano: 1991')
 plt.tight_layout()
 plt.savefig('seriest-painel.png')
-plt.show()
+#plt.clf(seriest)
+#plt.cla(seriest)
+plt.clf()
+plt.close('all')
+#plt.show()
 
 # Médias
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].mean())
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).mean())
-print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).mean())
-#print(poluicao_tabela['CO'].groupby(poluicao_tabela['DiaSemana']).mean())
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].mean().round(4))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).mean().round(4))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).mean().round(4))
 
-#print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].std())
+# Desvios padrão
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].std().round(4))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['Mes'], sort=False).std().round(4))
+print(poluicao_tabela[['CO', 'O3', 'temp', 'umid']].groupby(poluicao_tabela['DiaSemana'], sort=False).std().round(4))
+
+# Graficos de medias - geral, mensal, ciclo semanal
+titulos_mensal = ["Geral", "Janeiro", "Fevereiro", "Março", "Abril"]
+co_media_mensal = np.append(poluicao_tabela['CO'].mean(), poluicao_tabela['CO'].groupby(poluicao_tabela['Mes'], sort=False).mean())
+o3_media_mensal = np.append(poluicao_tabela['O3'].mean(), poluicao_tabela['O3'].groupby(poluicao_tabela['Mes'], sort=False).mean())
+tp_media_mensal = np.append(poluicao_tabela['temp'].mean(), poluicao_tabela['temp'].groupby(poluicao_tabela['Mes'], sort=False).mean())
+ur_media_mensal = np.append(poluicao_tabela['umid'].mean(), poluicao_tabela['umid'].groupby(poluicao_tabela['Mes'], sort=False).mean())
+#print(co_media_mensal)
+
+titulos_semanal = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+co_media_semanal = poluicao_tabela['CO'].groupby(poluicao_tabela['DiaSemana'], sort=False).mean()
+o3_media_semanal = poluicao_tabela['O3'].groupby(poluicao_tabela['DiaSemana'], sort=False).mean()
+tp_media_semanal = poluicao_tabela['temp'].groupby(poluicao_tabela['DiaSemana'], sort=False).mean()
+ur_media_semanal = poluicao_tabela['umid'].groupby(poluicao_tabela['DiaSemana'], sort=False).mean()
+
+#print(np.append(co_media_semanal, co_media_semanal)[5:12])
+
+#medias = plt.figure(figsize=(9,15))
+#gs = seriest.add_gridspec([4, 2], hspace=0)
+#medias_co = plt.figure(figsize=(3,15))
+#gs = medias_co.add_gridspec([1,2], vspace=0)
+#eixos = gs.subplots(sharey=True)
+#plt.bar(titulos_mensal, co_media_mensal)
+#plt.show()
+
+#plt.bar(titulos_semanal, np.append(co_media_semanal, co_media_semanal)[5:12])
+#plt.show()
+
+co_medias = plt.figure(figsize=(15,4))
+co_gs = co_medias.add_gridspec(1,2, wspace=0)
+co_eixos = co_gs.subplots(sharey=True)
+co_eixos[0].bar(titulos_mensal, co_media_mensal)
+co_eixos[1].bar(titulos_semanal, np.append(co_media_semanal, co_media_semanal)[5:12])
+plt.suptitle('Concentração média de CO (ppm)')
+plt.tight_layout()
+plt.savefig('medias-co.png')
+
+o3_medias = plt.figure(figsize=(15,4))
+o3_gs = o3_medias.add_gridspec(1,2, wspace=0)
+o3_eixos = o3_gs.subplots(sharey=True)
+o3_eixos[0].bar(titulos_mensal, o3_media_mensal)
+o3_eixos[1].bar(titulos_semanal, np.append(o3_media_semanal, o3_media_semanal)[5:12])
+plt.suptitle('Concentração média de O₃ (ppm)')
+plt.tight_layout()
+plt.savefig('medias-o3.png')
+
+tp_medias = plt.figure(figsize=(15,4))
+tp_gs = tp_medias.add_gridspec(1,2, wspace=0)
+tp_eixos = tp_gs.subplots(sharey=True)
+tp_eixos[0].bar(titulos_mensal, tp_media_mensal)
+tp_eixos[1].bar(titulos_semanal, np.append(tp_media_semanal, tp_media_semanal)[5:12])
+plt.suptitle('Temperatura média (°C)')
+plt.tight_layout()
+plt.savefig('medias-tp.png')
+
+ur_medias = plt.figure(figsize=(15,4))
+ur_gs = ur_medias.add_gridspec(1,2, wspace=0)
+ur_eixos = ur_gs.subplots(sharey=True)
+ur_eixos[0].bar(titulos_mensal, ur_media_mensal)
+ur_eixos[1].bar(titulos_semanal, np.append(ur_media_semanal, ur_media_semanal)[5:12])
+plt.suptitle('Umidade Relativa média (%)')
+plt.tight_layout()
+plt.savefig('medias-ur.png')
+
+'''
+fig, (axs1, axs2) = plt.subplots(1,2)
+fig.set_size_inches(15, 4)
+gs = fig.add_gridspec(1, 2, wspace=0)
+(axs1, axs2) = gs.subplots(sharey=True)
+axs1.bar(titulos_mensal, co_media_mensal)
+axs2.bar(titulos_semanal, np.append(co_media_semanal, co_media_semanal)[5:12])
+plt.suptitle('Concentração média de CO (ppm)')
+plt.tight_layout()
+plt.savefig('medias-co.png')
+#plt.show()
+'''
+
+#plt.scatter(poluicao_tabela['CO'], poluicao_tabela['O3'])
+#plt.show()
+
+# Graficos de nuvem / dispersao-xy entre as variaveis
